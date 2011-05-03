@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Digest::Oplop qw(oplop);
+use IO::Prompt;
+
+my $label  = shift || prompt("Label: ");
+
+my $master = prompt("Master: ", -e => "*");
+
+my $password = oplop($master,$label);
+
+eval { 
+	require Clipboard;
+	Clipboard->import();
+	Clipboard->copy($password);
+};
+
+print "$password\n";
